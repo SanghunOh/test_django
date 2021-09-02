@@ -13,17 +13,22 @@ if res.status_code == 200:
 
     category = ['스포츠', '정치']
     public_date = ['20210819', '20211030']
+    switch = 1
     for link in links:
         title = str.strip(link.get_text())
         href = str.strip(link.get('href'))
+        switch = 1 - switch
         try:
             cursor.execute(
-                "insert into polls_economics(category, public_date, create_date, href, title) values(datetime('now'), ?, ?)", (href,title))
+                "insert into polls_economics_demmy(public_date, category, create_date, href, title) "
+                "values "
+                "(?, ?, datetime('now'), ?, ?)", (public_date[switch], category[switch], href,title))
             print(title, ' : ', href)
         except:
             pass
 
     connect.commit()
+    connect.close()
 
 
 
